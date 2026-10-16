@@ -1,0 +1,1 @@
+"""SignalLab desktop analysis toolkit."""
