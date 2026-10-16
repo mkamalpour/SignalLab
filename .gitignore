@@ -1,0 +1,26 @@
+# Private datasets and generated artifacts
+*.mat
+*.csv
+*.npy
+*.npz
+*.pkl
+*.pickle
+*.joblib
+*.log
+.env
+.env.*
+# Python/editor caches and local environments
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+.venv/
+venv/
+build/
+dist/
+*.egg-info/
+.qodo/
+.vscode/
+.idea/
+Thumbs.db
+.DS_Store
