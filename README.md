@@ -73,6 +73,8 @@ tests/                  # focused scientific regression checks
 
 No real dataset or trained model is included in this repository.
 
-Current lightweight check (Windows, existing Conda base / Python 3.13.5): **38 passed**. No dependency installs, model downloads, live publishing, or heavy datasets were used.
+Current lightweight check (Windows, existing Conda base / Python 3.13.5): **44 passed**. No dependency installs, model downloads, live publishing, or heavy datasets were used.
 
 No license file is included.
+
+Feature CSV, model and log exports are staged in the destination folder before replacing the chosen file. Failed writes preserve a previous export and remove staging files. Feature export errors stay in the interface with destination/disk-space guidance.

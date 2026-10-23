@@ -20,6 +20,7 @@ from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVC
 
 from . import core
+from .storage import atomic_target
 
 matplotlib.use("TkAgg")
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -1449,9 +1450,14 @@ class SignalAnalyzerApp:
                 "Error", "Labels length does not match features. Cannot export."
             )
             return
-        df = pd.DataFrame(self.features, columns=self.feature_names)
-        df["label"] = self.labels
-        df.to_csv(path, index=False)
+        try:
+            df = pd.DataFrame(self.features, columns=self.feature_names)
+            df["label"] = self.labels
+            with atomic_target(path) as temporary:
+                df.to_csv(temporary, index=False)
+        except (OSError, ValueError) as error:
+            messagebox.showerror("Feature export", f"Could not save features: {error}. Check the destination and available disk space; any previous file was kept.")
+            return
         messagebox.showinfo("Saved", f"Features saved to {path}")
         self._log(f"Exported features to {path}")
 
@@ -1470,8 +1476,9 @@ class SignalAnalyzerApp:
             package = core.model_package(
                 self.pipeline, self._model_names, self._model_config, self._model_length
             )
-            with open(path, "wb") as stream:
-                pickle.dump(package, stream)
+            with atomic_target(path) as temporary:
+                with temporary.open("wb") as stream:
+                    pickle.dump(package, stream)
             self._log(
                 f"Saved model with frozen feature/configuration/version metadata: {Path(path).name}"
             )
@@ -1549,8 +1556,8 @@ class SignalAnalyzerApp:
             )
             if not path:
                 return
-            with open(path, "w", encoding="utf-8") as f:
-                f.write(txt)
+            with atomic_target(path) as temporary:
+                temporary.write_text(txt, encoding="utf-8")
             messagebox.showinfo("Saved", f"Log saved to {path}")
             self._log(f"Saved log to {path}")
         except Exception as e:
