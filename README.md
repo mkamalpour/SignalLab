@@ -12,13 +12,14 @@ A desktop workbench for exploring MATLAB signal datasets and building reproducib
 Use **Python 3.13** for the tested environment. The pinned scientific stack also supports Python 3.10-3.12; those interpreters have not been separately verified here. Python installations must include Tkinter (the standard Windows installer does; Linux may need its distribution's `python3-tk` package).
 
 ```powershell
-python -m venv .venv
-.venv\Scripts\python -m pip install -r requirements.txt
-.venv\Scripts\python main.py
-.venv\Scripts\python main.py --inspect
+conda activate base  # Or activate another existing compatible environment.
+# Optional dependency setup; requires explicit permission and connectivity.
+python -m pip install -r requirements.txt
+python main.py
+python main.py --inspect
 ```
 
-On macOS/Linux, replace `.venv\Scripts\python` with `.venv/bin/python`.
+Use `python` from your active compatible environment on other platforms too.
 
 Start with **Synthetic**, click **Load / Generate**, extract features, then train. Synthetic generation uses seed 42. Drag the horizontal divider to resize the workflow and plot workspace. The plot toolbar supports pan, zoom and image export.
 
@@ -53,8 +54,9 @@ Exports contain the fitted pipeline, feature order, signal length, sampling rate
 ## Validation and structure
 
 ```powershell
-.venv\Scripts\python -m pip install pytest
-.venv\Scripts\python -m pytest tests -q
+# Optional dependency setup; requires explicit permission and connectivity.
+python -m pip install pytest
+python -m pytest tests -q
 ```
 
 The regression suite checks FFT power conservation, known-frequency signals, constant/invalid inputs, MATLAB orientation and labels, all classifier/scaler combinations, fold-local preprocessing, reserved-holdout feature selection, and model round-trips. Desktop workflows are also checked separately against synthetic data and the local MATLAB dataset.
@@ -70,3 +72,5 @@ tests/                  # focused scientific regression checks
 ```
 
 No real dataset or trained model is included in this repository.
+
+Current lightweight check (Windows, existing Conda base / Python 3.13.5): **38 passed**. No dependency installs, model downloads, live publishing, or heavy datasets were used.
