@@ -74,3 +74,5 @@ tests/                  # focused scientific regression checks
 No real dataset or trained model is included in this repository.
 
 Current lightweight check (Windows, existing Conda base / Python 3.13.5): **38 passed**. No dependency installs, model downloads, live publishing, or heavy datasets were used.
+
+No license file is included.

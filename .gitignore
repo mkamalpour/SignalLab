@@ -24,3 +24,13 @@ dist/
 .idea/
 Thumbs.db
 .DS_Store
+
+# Local secrets, caches and private runtime files
+.cache/
+.ipynb_checkpoints/
+.streamlit/secrets.toml
+*.db
+*.db-*
+*.sqlite*
+*.pem
+*.key
