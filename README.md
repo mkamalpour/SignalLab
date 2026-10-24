@@ -1,6 +1,10 @@
 # SignalLab
 
-A desktop workbench for exploring MATLAB signal datasets and building reproducible signal classifiers. Inspect waveforms and spectra, compare features, evaluate models, and export complete prediction packages through a six-tab Tkinter interface.
+Look inside MATLAB signal files, compare waveforms and spectra, and build a classifier from time and frequency features. SignalLab includes a dataset analysis app and a separate MATLAB-file inspector.
+
+## Try it first
+
+Choose **Synthetic**, click **Load / Generate**, extract features, then train a classifier. Review the held-out results before exporting a model. Use `python main.py --inspect` when you only need to browse a MATLAB file.
 
 ## Two tools, one launcher
 
@@ -12,8 +16,8 @@ A desktop workbench for exploring MATLAB signal datasets and building reproducib
 Use **Python 3.13** for the tested environment. The pinned scientific stack also supports Python 3.10-3.12; those interpreters have not been separately verified here. Python installations must include Tkinter (the standard Windows installer does; Linux may need its distribution's `python3-tk` package).
 
 ```powershell
-conda activate base  # Or activate another existing compatible environment.
-# Optional dependency setup; requires explicit permission and connectivity.
+conda activate base  # Or use your existing compatible environment.
+# Install dependencies if they are not already available in your environment.
 python -m pip install -r requirements.txt
 python main.py
 python main.py --inspect
@@ -54,7 +58,7 @@ Exports contain the fitted pipeline, feature order, signal length, sampling rate
 ## Validation and structure
 
 ```powershell
-# Optional dependency setup; requires explicit permission and connectivity.
+# Install dependencies if they are not already available in your environment.
 python -m pip install pytest
 python -m pytest tests -q
 ```
@@ -73,7 +77,7 @@ tests/                  # focused scientific regression checks
 
 No real dataset or trained model is included in this repository.
 
-Current lightweight check (Windows, existing Conda base / Python 3.13.5): **44 passed**. No dependency installs, model downloads, live publishing, or heavy datasets were used.
+Checked on Windows with Python 3.13.5 (Conda base): **44 tests passed**.
 
 No license file is included.
 
