@@ -1,5 +1,7 @@
 # SignalLab
 
+**[Explore the interactive project presentation](docs/overview.html)** — open locally in your browser; works offline.
+
 Look inside MATLAB signal files, compare waveforms and spectra, and build a classifier from time and frequency features. SignalLab includes a dataset analysis app and a separate MATLAB-file inspector.
 
 ## Try it first
