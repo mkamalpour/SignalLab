@@ -77,8 +77,10 @@ tests/                  # focused scientific regression checks
 
 No real dataset or trained model is included in this repository.
 
-Checked on Windows with Python 3.13.5 (Conda base): **44 tests passed**.
+Checked on Windows with Python 3.13.5 (Conda base): **48 tests passed**.
 
 No license file is included.
 
 Feature CSV, model and log exports are staged in the destination folder before replacing the chosen file. Failed writes preserve a previous export and remove staging files. Feature export errors stay in the interface with destination/disk-space guidance.
+
+MATLAB labels outside signed 64-bit range and duplicate numeric class aliases are rejected before class conversion. Malformed model metadata produces explicit validation errors.

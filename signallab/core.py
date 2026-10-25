@@ -126,6 +126,10 @@ def labelled_mat(path, x_key="X", y_key="y"):
             raise ValueError(
                 "Labels must be finite integers; arbitrary integer class IDs are supported."
             )
+        # Compare as Python integers: float64 rounds int64.max up to 2**63.
+        bounds = np.iinfo(np.int64)
+        if any(not bounds.min <= int(value) <= bounds.max for value in y):
+            raise ValueError("Class labels must fit in signed 64-bit integers.")
         return X, y.astype(np.int64)
     import re
 
@@ -136,6 +140,8 @@ def labelled_mat(path, x_key="X", y_key="y"):
         raise ValueError(
             "Specify signal/label keys, or use separate X1, X2, ... class matrices."
         )
+    if len({int(k[1:]) for k in keys}) != len(keys):
+        raise ValueError("Class matrix names must have unique numeric class IDs.")
     matrices = [signal_matrix(data[k]) for k in keys]
     if len({a.shape[1] for a in matrices}) != 1:
         raise ValueError(
@@ -412,6 +418,8 @@ def validate_package(package):
         raise ValueError(
             "Unsupported model package. Retrain legacy models in SignalLab before exporting."
         )
+    if not isinstance(package.get("sklearn"), str):
+        raise ValueError("Model package is missing a valid scikit-learn version.")
     if package.get("sklearn", "").split(".")[:2] != sklearn.__version__.split(".")[:2]:
         raise ValueError(
             "Model scikit-learn major/minor version differs. Use the export environment or retrain."
@@ -421,13 +429,20 @@ def validate_package(package):
     if (
         not isinstance(pipe, Pipeline)
         or not hasattr(pipe, "classes_")
+        or not isinstance(names, (list, tuple))
         or not names
+        or any(not isinstance(n, str) for n in names)
         or len(set(names)) != len(names)
         or any(n not in FEATURE_NAMES for n in names)
     ):
         raise ValueError("Model is unfitted or missing a valid feature schema.")
     if pipe.n_features_in_ != len(names):
         raise ValueError("Model feature count does not match its metadata.")
-    FeatureConfig(**package["config"])
+    try:
+        FeatureConfig(**package.get("config", {}))
+        if not isinstance(package.get("config"), dict) or set(package["config"]) != {"fs", "low", "high"}:
+            raise ValueError("Model feature configuration is incomplete.")
+    except (TypeError, KeyError) as exc:
+        raise ValueError("Model feature configuration is invalid.") from exc
     if type(package.get("signal_length")) is not int or package["signal_length"] < 4:
         raise ValueError("Invalid model signal length.")
