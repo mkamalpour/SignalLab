@@ -1,6 +1,7 @@
-# Tested together on Python 3.13.5; compatible baseline for Python 3.10-3.13.
-numpy==2.1.3
-scipy==1.15.3
-scikit-learn==1.6.1
-pandas==2.2.3
-matplotlib==3.10.0
+# Offline regression baseline: existing ml environment, Python 3.10.19.
+# Startup also discovers the environment's bundled native DLLs on Windows.
+numpy==1.26.4
+scipy==1.15.2
+scikit-learn==1.7.2
+pandas==2.3.3
+matplotlib==3.10.8

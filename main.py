@@ -1,6 +1,9 @@
 """Launch SignalLab or its dedicated MATLAB inspector."""
 
 import argparse
+from runtime_setup import configure_runtime
+
+configure_runtime()
 
 
 def main():
@@ -18,7 +21,7 @@ def main():
         print(
             "\nSignalLab could not start because a required dependency is missing.\n"
             "\nUse the assigned environment and install the project requirements first:\n"
-            "  conda activate saleYar\n"
+            "  conda activate ml\n"
             "  python -m pip install -r requirements.txt\n"
             "\nIf you are using the managed workspace, open the project workspace for the assigned interpreter.\n"
             f"Original error: {type(exc).__name__}: {exc}\n"

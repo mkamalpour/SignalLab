@@ -11,16 +11,18 @@ Choose **Synthetic**, click **Load / Generate**, extract features, then train a 
 <details>
 <summary>Using the existing managed Windows workspace</summary>
 
-Assigned environment: **ml** — Python **3.10.19**, using the existing Conda environment `saleYar`. Open `Workspaces/SignalLab.code-workspace` from the workspace folder to select its interpreter.
-
-From this repository folder in PowerShell:
+Assigned environment: **ml**. From this repository folder in PowerShell:
 
 ```powershell
-& '..\Launchers\SignalLab.cmd' --check --deep
-& '..\Launchers\SignalLab.cmd'
+.\run.cmd --check
+.\run.cmd
 ```
 
-The launcher activates the assigned environment and checks dependencies. It does not install packages or download models. These launchers belong to the managed parent workspace; for a standalone clone, follow the setup instructions below in your own compatible environment. Keep optional model/provider prerequisites separate from the offline examples.
+The repo-local launcher selects `G:\AnaConda\install/envs/ml`
+and imports required startup modules. It installs nothing and downloads
+no models. On a standalone clone where that interpreter is absent, it uses your
+active `python`; activate a compatible environment first. `--check` reports the
+actual interpreter; it does not validate optional models or every workflow.
 
 </details>
 
@@ -31,10 +33,10 @@ The launcher activates the assigned environment and checks dependencies. It does
 
 ## Run locally
 
-The managed workspace is verified with **Python 3.10.19** in the existing `saleYar` environment (`ml` alias). Use the assigned launcher or select that interpreter in VS Code. Python installations must include Tkinter (the standard Windows installer does; Linux may need its distribution's `python3-tk` package).
+The managed workspace is verified with **Python 3.10.19** in the existing `ml` environment (`ml` alias). Use the assigned launcher or select that interpreter in VS Code. Python installations must include Tkinter (the standard Windows installer does; Linux may need its distribution's `python3-tk` package).
 
 ```powershell
-conda activate saleYar  # Or use your existing compatible environment.
+conda activate ml  # Or use your existing compatible environment.
 # Install dependencies if they are not already available in your environment.
 python -m pip install -r requirements.txt
 python main.py
@@ -78,10 +80,16 @@ Exports contain the fitted pipeline, feature order, signal length, sampling rate
 ```powershell
 # Install dependencies if they are not already available in your environment.
 python -m pip install pytest
-python -m pytest tests -q
+conda activate ml
+python test.py
 ```
 
 The regression suite checks FFT power conservation, known-frequency signals, constant/invalid inputs, MATLAB orientation and labels, all classifier/scaler combinations, fold-local preprocessing, reserved-holdout feature selection, and model round-trips. Desktop workflows are also checked separately against synthetic data and the local MATLAB dataset.
+
+`test.py` disables unrelated globally installed pytest plugins. Startup registers
+the active environment's existing `Library/bin` and `pyarrow.libs` directories
+for this process only. This fixes Windows DLL discovery without installing or
+copying libraries. `run.cmd --check` tests actual startup imports in `ml`.
 
 ```text
 main.py                 # launch either desktop tool
@@ -95,10 +103,13 @@ tests/                  # focused scientific regression checks
 
 No real dataset or trained model is included in this repository.
 
-Checked on Windows with Python 3.10.19 (existing Conda saleYar, workspace alias ml): **48 tests passed**.
+Checked on Windows with Python 3.10.19 (existing Conda ml, workspace alias ml): **48 tests passed**.
 
 No license file is included.
 
 Feature CSV, model and log exports are staged in the destination folder before replacing the chosen file. Failed writes preserve a previous export and remove staging files. Feature export errors stay in the interface with destination/disk-space guidance.
 
 MATLAB labels outside signed 64-bit range and duplicate numeric class aliases are rejected before class conversion. Malformed model metadata produces explicit validation errors.
+
+See the [engineering audit](docs/ENGINEERING_AUDIT.md) for the dated test baseline,
+project assessment, environment assignment and remaining work.
