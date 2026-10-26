@@ -8,6 +8,22 @@ Look inside MATLAB signal files, compare waveforms and spectra, and build a clas
 
 Choose **Synthetic**, click **Load / Generate**, extract features, then train a classifier. Review the held-out results before exporting a model. Use `python main.py --inspect` when you only need to browse a MATLAB file.
 
+<details>
+<summary>Using the existing managed Windows workspace</summary>
+
+Assigned environment: **ml** — Python **3.10.19**, using the existing Conda environment `saleYar`. Open `Workspaces/SignalLab.code-workspace` from the workspace folder to select its interpreter.
+
+From this repository folder in PowerShell:
+
+```powershell
+& '..\Launchers\SignalLab.cmd' --check --deep
+& '..\Launchers\SignalLab.cmd'
+```
+
+The launcher activates the assigned environment and checks dependencies. It does not install packages or download models. These launchers belong to the managed parent workspace; for a standalone clone, follow the setup instructions below in your own compatible environment. Keep optional model/provider prerequisites separate from the offline examples.
+
+</details>
+
 ## Two tools, one launcher
 
 - **Analysis workbench**: synthetic data, MATLAB class matrices and CSV class folders; signal previews; 16 time/spectral features; boxplots and standardized PCA; SVM, random forest and logistic regression; optional ANOVA selection, scaling and grid search; incremental feature-count evaluation; prediction probes; CSV/model export.
@@ -15,10 +31,10 @@ Choose **Synthetic**, click **Load / Generate**, extract features, then train a 
 
 ## Run locally
 
-Use **Python 3.13** for the tested environment. The pinned scientific stack also supports Python 3.10-3.12; those interpreters have not been separately verified here. Python installations must include Tkinter (the standard Windows installer does; Linux may need its distribution's `python3-tk` package).
+The managed workspace is verified with **Python 3.10.19** in the existing `saleYar` environment (`ml` alias). Use the assigned launcher or select that interpreter in VS Code. Python installations must include Tkinter (the standard Windows installer does; Linux may need its distribution's `python3-tk` package).
 
 ```powershell
-conda activate base  # Or use your existing compatible environment.
+conda activate saleYar  # Or use your existing compatible environment.
 # Install dependencies if they are not already available in your environment.
 python -m pip install -r requirements.txt
 python main.py
@@ -79,7 +95,7 @@ tests/                  # focused scientific regression checks
 
 No real dataset or trained model is included in this repository.
 
-Checked on Windows with Python 3.13.5 (Conda base): **48 tests passed**.
+Checked on Windows with Python 3.10.19 (existing Conda saleYar, workspace alias ml): **48 tests passed**.
 
 No license file is included.
 
