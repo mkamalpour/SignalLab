@@ -10,7 +10,7 @@ from scipy.stats import kurtosis, skew
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.feature_selection import SelectKBest, f_classif
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import accuracy_score, classification_report, confusion_matrix
+from sklearn.metrics import accuracy_score, classification_report, confusion_matrix, balanced_accuracy_score, f1_score
 from sklearn.model_selection import (
     GridSearchCV,
     StratifiedKFold,
@@ -342,9 +342,15 @@ def train(X, y, options):
     else:
         pipeline.fit(Xt, yt)
     predicted = pipeline.predict(Xv)
+    labels, counts = np.unique(yt, return_counts=True)
+    majority = labels[np.argmax(counts)]
     return dict(
         pipeline=pipeline,
         accuracy=accuracy_score(yv, predicted),
+        balanced_accuracy=balanced_accuracy_score(yv, predicted),
+        macro_f1=f1_score(yv, predicted, labels=pipeline.classes_, average='macro', zero_division=0),
+        majority_baseline_accuracy=float(np.mean(yv == majority)),
+        majority_baseline_class=majority.item() if isinstance(majority, np.generic) else majority,
         report=classification_report(yv, predicted, zero_division=0),
         cm=confusion_matrix(yv, predicted, labels=pipeline.classes_),
         classes=pipeline.classes_,

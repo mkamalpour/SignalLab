@@ -113,3 +113,9 @@ MATLAB labels outside signed 64-bit range and duplicate numeric class aliases ar
 
 See the [engineering audit](docs/ENGINEERING_AUDIT.md) for the dated test baseline,
 project assessment, environment assignment and remaining work.
+
+## Additional workflow improvements
+
+Balanced accuracy, macro F1 and a training-majority-class baseline accompany held-out classification results.
+
+Train a classifier; inspect the training report for balanced metrics and the majority baseline.

@@ -1756,7 +1756,11 @@ class SignalAnalyzerApp:
         )
         self.feature_names = [self.all_feature_names[i] for i in indices]
         self.features = self.features_full[:, indices]
-        self._on_train_done(result["accuracy"], result["report"], result["cm"])
+        comparison = (f"Balanced accuracy: {result['balanced_accuracy']:.1%}\n"
+                      f"Macro F1: {result['macro_f1']:.3f}\n"
+                      f"Training-majority baseline: {result['majority_baseline_accuracy']:.1%} "
+                      f"(class {result['majority_baseline_class']})\n\n")
+        self._on_train_done(result["accuracy"], comparison + result["report"], result["cm"])
         self.train_status.config(
             text=f"Holdout: {result['accuracy']:.1%} | train {result['train_count']} / test {result['test_count']}"
         )

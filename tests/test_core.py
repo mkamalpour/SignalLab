@@ -123,6 +123,10 @@ def test_each_classifier_and_scaler(training_data, model, scaler):
     assert result["accuracy"] >= 0.9
     assert set(result["pipeline"].classes_) == {10, 30}
     assert result["train_count"] == 48 and result["test_count"] == 12
+    assert result['balanced_accuracy'] >= .9
+    assert result['macro_f1'] >= .9
+    assert result['majority_baseline_accuracy'] == .5
+    assert result['majority_baseline_class'] in {10, 30}
 
 
 def test_grid_search_fits_preprocessing_inside_folds(training_data, monkeypatch):
